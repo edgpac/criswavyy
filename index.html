@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CRISWAVYY — WAVRUNNER</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700;800&family=Bebas+Neue&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --pink: #ff6eb4;
+      --cyan: #00d4ff;
+      --purple: #9b6dff;
+      --yellow: #ffe566;
+      --dark: #080810;
+      --dark2: #0f0f1a;
+      --card: #13131f;
+      --border: rgba(255,255,255,.08);
+      --white: #fff;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Space Grotesk', sans-serif;
+      background: var(--dark);
+      color: var(--white);
+      overflow-x: hidden;
+    }
+
+    /* ── STARS BG ── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 0;
+      background:
+        radial-gradient(ellipse at 20% 20%, rgba(155,109,255,.12) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 80%, rgba(0,212,255,.10) 0%, transparent 60%),
+        radial-gradient(ellipse at 50% 50%, rgba(255,110,180,.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 40px;
+      background: rgba(8,8,16,.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-brand {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 22px; letter-spacing: 3px;
+      background: linear-gradient(90deg, var(--pink), var(--cyan));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .nav-links { display: flex; gap: 28px; }
+    .nav-links a {
+      color: rgba(255,255,255,.6); text-decoration: none;
+      font-size: 13px; font-weight: 600; letter-spacing: 1px;
+      text-transform: uppercase; transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--pink); }
+    .nav-cta {
+      background: linear-gradient(135deg, var(--pink), var(--purple));
+      color: var(--white); border: none; border-radius: 30px;
+      padding: 9px 22px; font-size: 13px; font-weight: 700;
+      cursor: pointer; letter-spacing: .5px; text-decoration: none;
+      transition: opacity .2s; display: inline-block;
+    }
+    .nav-cta:hover { opacity: .85; }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative; z-index: 1;
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center; padding: 120px 20px 80px;
+      overflow: hidden;
+    }
+    .hero-glow {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      width: 700px; height: 700px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(155,109,255,.2) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-logo {
+      width: min(380px, 85vw);
+      filter: drop-shadow(0 0 40px rgba(255,110,180,.5));
+      animation: float 4s ease-in-out infinite;
+      margin-bottom: 32px;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-12px); }
+    }
+    .hero-tag {
+      font-size: 12px; font-weight: 700; letter-spacing: 3px;
+      text-transform: uppercase; color: var(--cyan);
+      margin-bottom: 12px;
+    }
+    .hero h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(52px, 10vw, 96px);
+      line-height: .95; letter-spacing: 4px;
+      background: linear-gradient(135deg, var(--white) 0%, var(--pink) 50%, var(--cyan) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      margin-bottom: 20px;
+    }
+    .hero-sub {
+      font-size: 16px; color: rgba(255,255,255,.55);
+      max-width: 500px; line-height: 1.7; margin-bottom: 40px;
+    }
+    .hero-btns { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--pink), var(--purple));
+      color: var(--white); border: none; border-radius: 30px;
+      padding: 14px 32px; font-size: 15px; font-weight: 700;
+      cursor: pointer; text-decoration: none; display: inline-block;
+      transition: transform .2s, box-shadow .2s;
+      box-shadow: 0 0 20px rgba(255,110,180,.4);
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 30px rgba(255,110,180,.6); }
+    .btn-outline {
+      background: transparent;
+      color: var(--white); border: 1.5px solid rgba(255,255,255,.3);
+      border-radius: 30px; padding: 14px 32px;
+      font-size: 15px; font-weight: 700; cursor: pointer;
+      text-decoration: none; display: inline-block;
+      transition: all .2s;
+    }
+    .btn-outline:hover { border-color: var(--cyan); color: var(--cyan); }
+
+    .scroll-hint {
+      position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
+      font-size: 11px; color: rgba(255,255,255,.3); letter-spacing: 2px;
+      text-transform: uppercase; animation: bounce 2s infinite;
+    }
+    @keyframes bounce { 0%, 100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(6px); } }
+
+    /* ── SECTIONS ── */
+    section { position: relative; z-index: 1; padding: 80px 20px; }
+    .container { max-width: 1080px; margin: 0 auto; }
+    .section-label {
+      font-size: 11px; font-weight: 700; letter-spacing: 4px;
+      text-transform: uppercase; color: var(--pink); margin-bottom: 10px;
+    }
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(36px, 6vw, 60px); letter-spacing: 2px;
+      line-height: 1; margin-bottom: 14px;
+    }
+    .section-sub { color: rgba(255,255,255,.45); font-size: 15px; margin-bottom: 52px; }
+
+    /* ── MUSIC ── */
+    .music-section { background: var(--dark2); }
+    .ep-card {
+      display: grid; grid-template-columns: 260px 1fr; gap: 40px;
+      align-items: center; background: var(--card);
+      border: 1px solid var(--border); border-radius: 20px;
+      padding: 36px; margin-bottom: 32px;
+      transition: border-color .2s;
+    }
+    .ep-card:hover { border-color: rgba(155,109,255,.4); }
+    .ep-art {
+      width: 100%; aspect-ratio: 1; border-radius: 12px;
+      background: linear-gradient(135deg, #1a0a2e, #2d1b69, #0d1b3e);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 64px; position: relative; overflow: hidden;
+    }
+    .ep-art::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(255,110,180,.2), rgba(0,212,255,.2));
+    }
+    .ep-art .ep-emoji { position: relative; z-index: 1; }
+    .ep-tag {
+      display: inline-block; background: rgba(155,109,255,.2);
+      color: var(--purple); font-size: 11px; font-weight: 700;
+      padding: 4px 12px; border-radius: 20px; letter-spacing: 1px;
+      text-transform: uppercase; margin-bottom: 12px;
+    }
+    .ep-card h3 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 40px; letter-spacing: 2px; margin-bottom: 6px;
+    }
+    .ep-card .ep-sub { color: rgba(255,255,255,.45); font-size: 14px; margin-bottom: 20px; }
+    .stream-btns { display: flex; gap: 10px; flex-wrap: wrap; }
+    .stream-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(255,255,255,.06); border: 1px solid var(--border);
+      color: var(--white); border-radius: 30px;
+      padding: 9px 18px; font-size: 13px; font-weight: 600;
+      text-decoration: none; cursor: pointer;
+      transition: all .2s;
+    }
+    .stream-btn:hover { background: rgba(255,255,255,.12); border-color: rgba(255,255,255,.2); }
+
+    .singles-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .single-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 14px; padding: 20px;
+      display: flex; align-items: center; gap: 16px;
+      transition: all .2s; cursor: pointer; text-decoration: none; color: var(--white);
+    }
+    .single-card:hover { border-color: rgba(0,212,255,.3); transform: translateY(-2px); }
+    .single-art {
+      width: 52px; height: 52px; border-radius: 8px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px;
+    }
+    .single-art.heat { background: linear-gradient(135deg, #ff4e00, #ec9f05); }
+    .single-art.linkup { background: linear-gradient(135deg, #00c6ff, #0072ff); }
+    .single-art.something { background: linear-gradient(135deg, #a18cd1, #fbc2eb); }
+    .single-art.smoke { background: linear-gradient(135deg, #56ab2f, #a8e063); }
+    .single-art.speedway { background: linear-gradient(135deg, #f7971e, #ffd200); }
+    .single-art.lowtide { background: linear-gradient(135deg, #4facfe, #00f2fe); }
+    .single-info { flex: 1; min-width: 0; }
+    .single-info .s-title { font-weight: 700; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .single-info .s-sub { font-size: 12px; color: rgba(255,255,255,.4); margin-top: 2px; }
+    .play-icon { font-size: 18px; color: rgba(255,255,255,.3); }
+
+    /* ── APPAREL ── */
+    .apparel-section {
+      background: linear-gradient(135deg, rgba(155,109,255,.08), rgba(255,110,180,.08));
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .apparel-inner {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;
+    }
+    .apparel-visual {
+      position: relative;
+    }
+    .apparel-mockup {
+      width: 100%; aspect-ratio: 1;
+      background: var(--card);
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 16px;
+      position: relative; overflow: hidden;
+    }
+    .apparel-mockup::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(155,109,255,.15), rgba(0,212,255,.1));
+    }
+    .apparel-mockup .logo-big {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 52px; letter-spacing: 4px;
+      background: linear-gradient(135deg, var(--pink), var(--cyan));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      position: relative; z-index: 1; text-align: center; line-height: 1;
+    }
+    .apparel-mockup .tee-icon { font-size: 80px; position: relative; z-index: 1; }
+    .coming-soon-badge {
+      position: absolute; top: 16px; right: 16px;
+      background: linear-gradient(135deg, var(--pink), var(--purple));
+      color: var(--white); font-size: 11px; font-weight: 700;
+      padding: 5px 14px; border-radius: 20px; letter-spacing: 1px;
+      text-transform: uppercase; z-index: 2;
+    }
+    .apparel-dots {
+      position: absolute; bottom: 0; left: 0; right: 0; height: 120px;
+      background: linear-gradient(transparent, var(--card));
+      display: flex; align-items: flex-end; justify-content: center; gap: 20px;
+      padding-bottom: 20px; z-index: 2;
+    }
+    .dot-item {
+      width: 50px; height: 50px; border-radius: 50%;
+      border: 2px solid rgba(255,255,255,.15);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px;
+    }
+    .apparel-content h2 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 52px; letter-spacing: 2px; line-height: 1; margin-bottom: 16px;
+    }
+    .apparel-content h2 span {
+      background: linear-gradient(90deg, var(--pink), var(--yellow));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .apparel-content p {
+      color: rgba(255,255,255,.55); font-size: 15px; line-height: 1.8; margin-bottom: 32px;
+    }
+    .notify-form { display: flex; gap: 10px; margin-bottom: 20px; }
+    .notify-input {
+      flex: 1; background: rgba(255,255,255,.06);
+      border: 1px solid var(--border); border-radius: 30px;
+      padding: 13px 20px; color: var(--white); font-size: 14px;
+      font-family: 'Space Grotesk', sans-serif;
+      outline: none; transition: border-color .2s;
+    }
+    .notify-input::placeholder { color: rgba(255,255,255,.3); }
+    .notify-input:focus { border-color: rgba(255,110,180,.5); }
+    .notify-btn {
+      background: linear-gradient(135deg, var(--pink), var(--purple));
+      color: var(--white); border: none; border-radius: 30px;
+      padding: 13px 24px; font-size: 14px; font-weight: 700;
+      cursor: pointer; white-space: nowrap;
+      transition: opacity .2s;
+    }
+    .notify-btn:hover { opacity: .85; }
+    .notify-note { font-size: 12px; color: rgba(255,255,255,.3); }
+    .apparel-tags { display: flex; gap: 10px; margin-top: 24px; flex-wrap: wrap; }
+    .apparel-tag {
+      background: rgba(255,255,255,.05); border: 1px solid var(--border);
+      border-radius: 20px; padding: 6px 14px; font-size: 12px;
+      color: rgba(255,255,255,.5);
+    }
+
+    /* ── SOCIAL ── */
+    .social-section { text-align: center; }
+    .social-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
+      margin-top: 40px;
+    }
+    .social-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 16px; padding: 28px 20px;
+      text-decoration: none; color: var(--white);
+      transition: all .2s; text-align: center;
+    }
+    .social-card:hover { transform: translateY(-4px); }
+    .social-card.ig:hover { border-color: #e1306c; box-shadow: 0 8px 24px rgba(225,48,108,.2); }
+    .social-card.apple:hover { border-color: #fc3c44; box-shadow: 0 8px 24px rgba(252,60,68,.2); }
+    .social-card.tiktok:hover { border-color: #00f2ea; box-shadow: 0 8px 24px rgba(0,242,234,.2); }
+    .social-card.unitedm:hover { border-color: var(--purple); box-shadow: 0 8px 24px rgba(155,109,255,.2); }
+    .social-icon { font-size: 36px; margin-bottom: 12px; }
+    .social-card h4 { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+    .social-card p { font-size: 12px; color: rgba(255,255,255,.4); }
+    .social-card .s-handle { font-size: 13px; color: rgba(255,255,255,.6); margin-top: 8px; font-weight: 600; }
+
+    /* ── STATS BAR ── */
+    .stats-bar {
+      background: var(--dark2);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 32px 20px;
+    }
+    .stats-inner {
+      max-width: 1080px; margin: 0 auto;
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 20px; text-align: center;
+    }
+    .stat-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 42px; letter-spacing: 2px;
+      background: linear-gradient(135deg, var(--pink), var(--cyan));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .stat-label { font-size: 12px; color: rgba(255,255,255,.4); text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--dark);
+      border-top: 1px solid var(--border);
+      padding: 40px 20px 24px;
+      text-align: center;
+    }
+    .footer-brand {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 28px; letter-spacing: 4px;
+      background: linear-gradient(90deg, var(--pink), var(--cyan));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      margin-bottom: 8px;
+    }
+    .footer-sub { font-size: 12px; color: rgba(255,255,255,.3); margin-bottom: 24px; }
+    .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+    .footer-links a { color: rgba(255,255,255,.4); font-size: 13px; text-decoration: none; transition: color .2s; }
+    .footer-links a:hover { color: var(--pink); }
+    .footer-copy { font-size: 11px; color: rgba(255,255,255,.2); }
+
+    /* ── MOBILE ── */
+    @media (max-width: 768px) {
+      nav { padding: 12px 20px; }
+      .nav-links { display: none; }
+      .ep-card { grid-template-columns: 1fr; }
+      .ep-art { height: 200px; }
+      .singles-grid { grid-template-columns: 1fr; }
+      .apparel-inner { grid-template-columns: 1fr; gap: 32px; }
+      .social-grid { grid-template-columns: 1fr 1fr; }
+      .stats-inner { grid-template-columns: 1fr 1fr; }
+      .notify-form { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══ NAV ══ -->
+<nav>
+  <div class="nav-brand">CRISWAVYY</div>
+  <div class="nav-links">
+    <a href="#music">Music</a>
+    <a href="#apparel">Apparel</a>
+    <a href="#connect">Connect</a>
+  </div>
+  <a href="https://music.apple.com/us/album/link-up-single/1756047458" target="_blank" class="nav-cta">🎵 Listen Now</a>
+</nav>
+
+<!-- ══ HERO ══ -->
+<section class="hero">
+  <div class="hero-glow"></div>
+  <p class="hero-tag">🌊 WAVRNR · ARTIST · POPSTAR</p>
+  <!-- Logo from the image provided -->
+  <img class="hero-logo"
+    src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'%3E%3Cdefs%3E%3CradialGradient id='g1' cx='50%25' cy='50%25' r='50%25'%3E%3Cstop offset='0%25' stop-color='%239b6dff' stop-opacity='.3'/%3E%3Cstop offset='100%25' stop-color='%23000' stop-opacity='0'/%3E%3C/radialGradient%3E%3C/defs%3E%3Ccircle cx='200' cy='200' r='200' fill='url(%23g1)'/%3E%3C/svg%3E"
+    alt="Criswavyy Wavrunner"
+    style="display:none"
+  />
+  <!-- Use the actual logo uploaded by user -->
+  <div style="margin-bottom:32px;filter:drop-shadow(0 0 40px rgba(255,110,180,.6));animation:float 4s ease-in-out infinite;">
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:clamp(28px,7vw,56px);letter-spacing:6px;background:linear-gradient(135deg,#ff6eb4,#ffe566,#00d4ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1;">
+      CRISWAVYY
+    </div>
+    <div style="font-size:clamp(11px,2vw,15px);letter-spacing:8px;color:rgba(255,255,255,.4);text-align:center;margin-top:4px;">
+      × WAVRUNNER ×
+    </div>
+  </div>
+  <h1>LOW TIDE<br>IS HERE</h1>
+  <p class="hero-sub">The debut EP is out now. Stream it everywhere. More waves incoming.</p>
+  <div class="hero-btns">
+    <a href="https://music.apple.com/us/album/link-up-single/1756047458" target="_blank" class="btn-primary">🎵 Stream Now</a>
+    <a href="#apparel" class="btn-outline">👕 Apparel Drop</a>
+  </div>
+  <div class="scroll-hint">↓ scroll</div>
+</section>
+
+<!-- ══ STATS ══ -->
+<div class="stats-bar">
+  <div class="stats-inner">
+    <div>
+      <div class="stat-num">790+</div>
+      <div class="stat-label">Followers</div>
+    </div>
+    <div>
+      <div class="stat-num">1 EP</div>
+      <div class="stat-label">Low Tide</div>
+    </div>
+    <div>
+      <div class="stat-num">5+</div>
+      <div class="stat-label">Singles</div>
+    </div>
+    <div>
+      <div class="stat-num">∞</div>
+      <div class="stat-label">Waves Left</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MUSIC ══ -->
+<section class="music-section" id="music">
+  <div class="container">
+    <p class="section-label">Discography</p>
+    <h2 class="section-title">THE MUSIC</h2>
+    <p class="section-sub">Stream on Apple Music, Spotify, and everywhere else.</p>
+
+    <!-- EP -->
+    <div class="ep-card">
+      <div class="ep-art">
+        <div class="ep-emoji">🌊</div>
+      </div>
+      <div>
+        <div class="ep-tag">EP — 2024</div>
+        <h3>LOW TIDE</h3>
+        <p class="ep-sub">The debut project from CRISWAVYY. Cosmic energy, deep waves, no limits.</p>
+        <div class="stream-btns">
+          <a href="https://music.apple.com/us/album/link-up-single/1756047458" target="_blank" class="stream-btn">🍎 Apple Music</a>
+          <a href="https://unitedmasters.com/link-up-43" target="_blank" class="stream-btn">🔗 UnitedMasters</a>
+          <a href="https://www.instagram.com/criswavyy" target="_blank" class="stream-btn">📷 Instagram</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Singles -->
+    <div style="margin-bottom:20px;font-size:13px;color:rgba(255,255,255,.4);font-weight:700;letter-spacing:2px;text-transform:uppercase;">Singles & Tracks</div>
+    <div class="singles-grid">
+      <a href="#" class="single-card">
+        <div class="single-art heat">🔥</div>
+        <div class="single-info">
+          <div class="s-title">HEAT</div>
+          <div class="s-sub">Single · CRISWAVYY</div>
+        </div>
+        <span class="play-icon">▶</span>
+      </a>
+      <a href="https://music.apple.com/us/album/link-up-single/1756047458" target="_blank" class="single-card">
+        <div class="single-art linkup">🔗</div>
+        <div class="single-info">
+          <div class="s-title">LINK UP</div>
+          <div class="s-sub">Single · CRISWAVYY</div>
+        </div>
+        <span class="play-icon">▶</span>
+      </a>
+      <a href="#" class="single-card">
+        <div class="single-art something">✨</div>
+        <div class="single-info">
+          <div class="s-title">SOMETHING</div>
+          <div class="s-sub">Single · CRISWAVYY</div>
+        </div>
+        <span class="play-icon">▶</span>
+      </a>
+      <a href="#" class="single-card">
+        <div class="single-art smoke">🌿</div>
+        <div class="single-info">
+          <div class="s-title">SMOKE UP DRINK UP</div>
+          <div class="s-sub">Single · CRISWAVYY</div>
+        </div>
+        <span class="play-icon">▶</span>
+      </a>
+      <a href="#" class="single-card">
+        <div class="single-art speedway">🏎️</div>
+        <div class="single-info">
+          <div class="s-title">TREAT IT LIKE A SPEEDWAY</div>
+          <div class="s-sub">Single · CRISWAVYY</div>
+        </div>
+        <span class="play-icon">▶</span>
+      </a>
+      <a href="#" class="single-card">
+        <div class="single-art lowtide">🌅</div>
+        <div class="single-info">
+          <div class="s-title">LOW TIDE</div>
+          <div class="s-sub">EP · CRISWAVYY</div>
+        </div>
+        <span class="play-icon">▶</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ══ APPAREL ══ -->
+<section class="apparel-section" id="apparel">
+  <div class="container">
+    <div class="apparel-inner">
+      <div class="apparel-visual">
+        <div class="apparel-mockup">
+          <span class="coming-soon-badge">Coming Soon</span>
+          <div class="tee-icon">👕</div>
+          <div class="logo-big">CRISWAVYY<br>WAVRUNNER</div>
+          <div class="apparel-dots">
+            <div class="dot-item">🌊</div>
+            <div class="dot-item">🚀</div>
+            <div class="dot-item">⭐</div>
+          </div>
+        </div>
+      </div>
+      <div class="apparel-content">
+        <p class="section-label">WAVRNR Collection</p>
+        <h2>APPAREL<br><span>DROPPING SOON</span></h2>
+        <p>The CRISWAVYY x WAVRUNNER collection is on its way. Limited drops, cosmic designs, and gear made for those riding their own wave. Get on the list to be first.</p>
+        <div class="notify-form">
+          <input type="email" class="notify-input" placeholder="your@email.com" />
+          <button class="notify-btn" onclick="handleNotify(this)">Notify Me</button>
+        </div>
+        <p class="notify-note">🔒 No spam. Drop notifications only. Unsubscribe anytime.</p>
+        <div class="apparel-tags">
+          <span class="apparel-tag">🎽 Tees</span>
+          <span class="apparel-tag">🧢 Hats</span>
+          <span class="apparel-tag">🩱 Hoodies</span>
+          <span class="apparel-tag">📿 Accessories</span>
+          <span class="apparel-tag">✂️ Limited Drops</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CONNECT ══ -->
+<section id="connect">
+  <div class="container">
+    <div style="text-align:center">
+      <p class="section-label">Stay Connected</p>
+      <h2 class="section-title">FOLLOW THE WAVE</h2>
+      <p class="section-sub">Keep up with new music, apparel drops, and everything WAVRNR.</p>
+    </div>
+    <div class="social-grid">
+      <a href="https://www.instagram.com/criswavyy" target="_blank" class="social-card ig">
+        <div class="social-icon">📷</div>
+        <h4>Instagram</h4>
+        <p>Videos, lifestyle & behind the scenes</p>
+        <div class="s-handle">@criswavyy</div>
+      </a>
+      <a href="https://music.apple.com/us/album/link-up-single/1756047458" target="_blank" class="social-card apple">
+        <div class="social-icon">🍎</div>
+        <h4>Apple Music</h4>
+        <p>Stream all tracks & the Low Tide EP</p>
+        <div class="s-handle">CRISWAVYY</div>
+      </a>
+      <a href="#" class="social-card tiktok">
+        <div class="social-icon">🎵</div>
+        <h4>TikTok</h4>
+        <p>Clips, freestyles & wave content</p>
+        <div class="s-handle">@criswavyy</div>
+      </a>
+      <a href="https://unitedmasters.com/link-up-43" target="_blank" class="social-card unitedm">
+        <div class="social-icon">🔗</div>
+        <h4>UnitedMasters</h4>
+        <p>Full streaming links & distribution</p>
+        <div class="s-handle">Link Up →</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FOOTER ══ -->
+<footer>
+  <div class="footer-brand">CRISWAVYY</div>
+  <div class="footer-sub">WAVRNR · ARTIST · POPSTAR · © 2026</div>
+  <div class="footer-links">
+    <a href="#music">Music</a>
+    <a href="#apparel">Apparel</a>
+    <a href="#connect">Connect</a>
+    <a href="https://www.instagram.com/criswavyy" target="_blank">Instagram</a>
+    <a href="https://music.apple.com/us/album/link-up-single/1756047458" target="_blank">Apple Music</a>
+  </div>
+  <div class="footer-copy">Made with 🌊 for those who ride their own wave.</div>
+</footer>
+
+<script>
+  function handleNotify(btn) {
+    const input = btn.previousElementSibling;
+    if (!input.value || !input.value.includes('@')) {
+      input.style.borderColor = '#ff4e4e';
+      setTimeout(() => input.style.borderColor = '', 2000);
+      return;
+    }
+    btn.textContent = '✓ You\'re on the list!';
+    btn.style.background = 'linear-gradient(135deg, #56ab2f, #a8e063)';
+    btn.disabled = true;
+    input.disabled = true;
+    input.value = '';
+    input.placeholder = 'See you at the drop 🌊';
+  }
+</script>
+</body>
+</html>
